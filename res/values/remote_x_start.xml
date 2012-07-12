@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Remote_X</string>
+    <string name="Remote_x_activity_name">Remote_X</string>
+    <string name="checkconnection">The moblie can not connect to pc.\n
+						 		   Some suggests:\n
+						 		   1.Make sure pc server is working.\n
+						 		   2.Make sure you had openned your WiFi.\n
+						 		   3.Make sure address configure is correct.</string>
+	<string name="ignore">Ignore</string>
+	<string name="close">Close</string>
+</resources>

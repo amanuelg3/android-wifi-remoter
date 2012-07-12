@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- menu -->
+    <string name="about">About</string>
+    <string name="about_content">Thanks to use my App.\ne-mail:shmcclmm@gmail.com</string>
+    <string name="connect">Connect</string>
+    <string name="connect_title">"Connrect or not ? "</string>
+    <string name="connect_btn_connect">Connect</string>
+    <string name="connect_btn_disconnect">Disconnect</string>
+    <string name="more">More</string>
+    <string name="exit">Exit</string>
+    <string name="vibrate">Vibrate switch</string>
+    <string name="ipsetup">Setup PC IP</string>
+    <string name="ipsetup_title">Input your pc address:\neg. xxx.xxx.xxx.xxx:xxxx</string>
+    <string name="sourcemode">Select control source</string>
+    <string name="sourcemode_title">Select input source:</string>
+    <string name="sourcemode_btn_sensor">Sensor</string>
+    <string name="sourcemode_btn_touch">Touch</string>
+    <string name="controlmode">Select control mode</string>
+    <string name="controlmode_title">What does U want mobile to be??</string>
+    <string name="controlmode_btn_keyandmouse">Key+Mouse</string>
+    <string name="controlmode_btn_joystick">JoyStick</string>
+
+</resources>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="KeyAndMouse_activity_name">Key-Mouse</string>
+    <!-- 				mouse					    -->
+    <string name="mouseleft"> </string>
+    <string name="sliptoselect"> </string>
+    <string name="mouseright"> </string>
+    <!--               keyboard line 1              -->
+    <string name="ESC">Esc</string>
+    <string name="F1">F1</string>
+    <string name="F2">F2</string>
+    <string name="F3">F3</string>
+    <string name="F4">F4</string>
+    <string name="F5">F5</string>
+    <string name="F6">F6</string>
+    <string name="F7">F7</string>
+    <string name="F8">F8</string>
+    <string name="F9">F9</string>
+    <string name="F10">F10</string>
+    <string name="F11">F11</string>
+    <string name="F12">F12</string>
+    <string name="PRTSC">PrtSc</string>
+    <string name="DELETE">Delete</string>
+    <!--               keyboard line 2              -->
+    <string name="VK21">`</string>
+    <string name="VK1">1</string>
+    <string name="VK2">2</string>
+    <string name="VK3">3</string>
+    <string name="VK4">4</string>
+    <string name="VK5">5</string>
+    <string name="VK6">6</string>
+    <string name="VK7">7</string>
+    <string name="VK8">8</string>
+    <string name="VK9">9</string>
+    <string name="VK0">0</string>
+    <string name="VK212">-</string>
+    <string name="VK213">=</string>
+    <string name="BACK">Back</string>
+    <string name="HOME">HM</string>
+    <!--               keyboard line 3              -->
+    <string name="TAB">Tab</string>
+    <string name="Q">Q</string>
+    <string name="W">W</string>
+    <string name="E">E</string>
+    <string name="R">R</string>
+    <string name="T">T</string>
+    <string name="Y">Y</string>
+    <string name="U">U</string>
+    <string name="I">I</string>
+    <string name="O">O</string>
+    <string name="P">P</string>
+    <string name="VK312">[</string>
+    <string name="VK313">]</string>
+    <string name="VK314">\\</string>
+    <string name="END">End</string>
+    <!--               keyboard line 4              -->
+    <string name="CAPSLK">CapsLK</string>
+    <string name="A">A</string>
+    <string name="S">S</string>
+    <string name="D">D</string>
+    <string name="F">F</string>
+    <string name="G">G</string>
+    <string name="H">H</string>
+    <string name="J">J</string>
+    <string name="K">K</string>
+    <string name="L">L</string>
+    <string name="VK411">;</string>
+    <string name="VK412">\'</string>
+    <string name="ENTER">Enter</string>
+    <string name="PGUP">PgU</string>
+    <!--               keyboard line 5              -->
+    <string name="SHIFTL">Shift</string>
+    <string name="Z">Z</string>
+    <string name="X">X</string>
+    <string name="C">C</string>
+    <string name="V">V</string>
+    <string name="B">B</string>
+    <string name="N">N</string>
+    <string name="M">M</string>
+    <string name="VK59">,</string>
+    <string name="VK510">.</string>
+    <string name="VK511">/</string>
+    <string name="SHIFTR">Shift</string>
+    <string name="UP">Up</string>
+    <string name="PGDN">PgD</string>
+    <!--               keyboard line 6              -->
+    <string name="FN">Fn</string>
+    <string name="CTRLL">Ctrl</string>
+    <string name="WINDOWS">WS</string>
+    <string name="ALTL">Alt</string>
+    <string name="SPACE">Space</string>
+    <string name="ALTR">Alt</string>
+    <string name="MENU">MN</string>
+    <string name="CTRLR">Ctrl</string>
+    <string name="LEFT">Lf</string>  
+    <string name="DOWN">Dn</string>
+    <string name="RIGHT">Rt</string>            
+</resources>
