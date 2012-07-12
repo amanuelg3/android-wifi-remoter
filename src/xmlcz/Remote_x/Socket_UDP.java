@@ -11,8 +11,8 @@ public class Socket_UDP extends Thread implements X_Socket{
 
 	protected boolean DBG = true;
 	
-	protected DatagramSocket mSocket;
-	protected DatagramPacket mPacket;
+	protected DatagramSocket mSocket_UDP;
+	protected DatagramPacket mPacket_UDP;
 	protected static int DATA_MAX_LENTH =128;
 	protected byte[] data = new byte[DATA_MAX_LENTH];
 	
@@ -52,11 +52,11 @@ public class Socket_UDP extends Thread implements X_Socket{
 			//get InetAddress by String.
 			targetIP = InetAddress.getByName(targetIP_str);
 			// Constructs a UDP datagram socket which is bound to the specific port aPort on the localhost. 
-			mSocket = new DatagramSocket(locatePort); 
+			mSocket_UDP = new DatagramSocket(locatePort); 
 			if (DBG)
 				System.out.println("mSocket created.");
 			//Constructs a new DatagramPacket object to send data to the port aPort of the address host. 
-			mPacket = new DatagramPacket(data,DATA_MAX_LENTH,targetIP, targetPort);
+			mPacket_UDP = new DatagramPacket(data,DATA_MAX_LENTH,targetIP, targetPort);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			if (DBG)
@@ -74,8 +74,8 @@ public class Socket_UDP extends Thread implements X_Socket{
 		try {
 			targetIP = InetAddress.getByName(ip);
 			targetPort = port;
-			mPacket.setAddress(targetIP);
-			mPacket.setPort(targetPort);
+			mPacket_UDP.setAddress(targetIP);
+			mPacket_UDP.setPort(targetPort);
 			if(DBG) System.out.println("Packet setup success.");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -85,25 +85,25 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 	
 	@Override
-	public void Connect() {
+	public void connect() {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public void Disconnect() {
+	public void disconnect() {
 		// TODO Auto-generated method stub
-		
+		destroy();
 	}
 	
 	public void sendData(String Data){
 		data = null;
 		//translate String to byte array
 		data = Data.getBytes();
-		mPacket.setData(data);
-		mPacket.setLength(data.length);
+		mPacket_UDP.setData(data);
+		mPacket_UDP.setLength(data.length);
 		try {
-			mSocket.send(mPacket);
+			mSocket_UDP.send(mPacket_UDP);
 			if (DBG)
 				System.out.println("mSocket send \""+ Data + "\" success.\n");
 		} catch (IOException e) {
@@ -119,8 +119,8 @@ public class Socket_UDP extends Thread implements X_Socket{
 		byte[] datatmp = new byte[DATA_MAX_LENTH];
 		DatagramPacket Packet = new DatagramPacket(datatmp,DATA_MAX_LENTH);
 		try {
-			mSocket.setSoTimeout(100);
-			mSocket.receive(Packet);
+			mSocket_UDP.setSoTimeout(100);
+			mSocket_UDP.receive(Packet);
 			Data = new String(Packet.getData(),Packet.getOffset(),Packet.getLength());
 			if(DBG)	System.out.println(Data+"<<");
 		} catch (IOException e) {
@@ -148,10 +148,9 @@ public class Socket_UDP extends Thread implements X_Socket{
 	public void destroy() {
 		// TODO Auto-generated method stub
 		sendData(Socketclose);
-		mSocket.close();
+		mSocket_UDP.close();
 		if (DBG)
 			System.out.println("mSocket close.");
 	}
-
 
 }

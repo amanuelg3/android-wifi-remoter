@@ -20,20 +20,23 @@ public class X_Activity extends Activity {
 	
 	private X_Menu mMenu;
 	
+	private IntentFilter filter;
+	private MenuCmd mCmd;
 	private boolean MenuCmdisRegister = false;
-	protected MenuCmd mCmd;
 	
 	protected static boolean isFirstOpen = false;
+	
+	protected static Vibrator mVibrator;
+	protected static boolean enadleVibrator = false;
+	
 	protected static Socket_UDP mSocket;
 	protected static WifiManager mWifiManager;
 	protected static String targetIP_str;
 	protected static int targetPort;
 	protected static String locateIP_str;
 	protected static int locatePort;
-
-	protected static Vibrator mVibrator;
-	protected static boolean enadleVibrator = false;
 	
+	private String AMsgOnReceiveBroadcast = "X_Activity receive Broadcast.";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,6 @@ public class X_Activity extends Activity {
         		WindowManager.LayoutParams.FLAG_FULLSCREEN);//…Ë÷√»´∆¡ 
         
         mMenu = new X_Menu(X_Activity.this);
-        
 
         if(!isFirstOpen){
         	isFirstOpen = true;
@@ -65,26 +67,30 @@ public class X_Activity extends Activity {
         	mSocket.start();
         }
         
-        IntentFilter filter = new IntentFilter();
+        filter = new IntentFilter();
         filter.addAction(X_Menu.MENU_EXIT);
         filter.addAction(X_Menu.MENU_IPSETUP);
         filter.addAction(X_Menu.MENU_VIBRATE);
         mCmd = new MenuCmd();
-		if(!MenuCmdisRegister){
-			MenuCmdisRegister = true;
-			registerReceiver(mCmd, filter);
-		}
     }
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		if(!MenuCmdisRegister){
+			MenuCmdisRegister = true;
+			registerReceiver(mCmd, filter);
+		}
 		super.onResume();
 	}
 	
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
+		if(MenuCmdisRegister){
+			MenuCmdisRegister = false;
+			unregisterReceiver(mCmd);
+		}
 		super.onPause();
 	}
 
@@ -97,10 +103,7 @@ public class X_Activity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if(MenuCmdisRegister){
-			MenuCmdisRegister = false;
-			unregisterReceiver(mCmd);
-		}
+		if(DBG) System.out.println("destroy.");
 		super.onDestroy();
 	}
 
@@ -110,7 +113,7 @@ public class X_Activity extends Activity {
 		// TODO Auto-generated method stub
 		vibrate();
 		super.finish();
-		mVibrator.cancel();
+		if(DBG) System.out.println("finish.");
 	}
 
 	public static void vibrate(){
@@ -134,7 +137,6 @@ public class X_Activity extends Activity {
 	class MenuCmd extends BroadcastReceiver{
 		Context mContext;
 		public MenuCmd(){
-			
 		}
 		public MenuCmd(Context context){
 			super();
@@ -143,7 +145,8 @@ public class X_Activity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			if(DBG) System.out.println("Broad Receive");
+			if(DBG) System.out.println(AMsgOnReceiveBroadcast);
+			
 			if(intent.getAction().equals(X_Menu.MENU_EXIT)){
 				if(DBG) System.out.println(X_Menu.MENU_EXIT);
 				finish();

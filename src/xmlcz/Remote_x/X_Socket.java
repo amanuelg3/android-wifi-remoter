@@ -4,9 +4,9 @@ public interface X_Socket {
 	
 	public void PacketSetup(String ip,int port);
 	
-	public void Connect();
+	public void connect();
 	
-	public void Disconnect();
+	public void disconnect();
 	
 	public void sendData(String Data);
 	

@@ -31,6 +31,8 @@ public class X_Menu {
 	public static final String MENU_IPSETUP_PORT = "targetPort";
 	public static final String MENU_VIBRATE = "vibrate_setup";
 	
+	private String AMsgOnSendBroadcast = "X_Menu send Broadcast.";
+	
 	public X_Menu() {
 		
 	}
@@ -119,14 +121,14 @@ public class X_Menu {
 			Intent intent = new Intent();
 			intent.setAction(MENU_VIBRATE);
 			mContext.sendBroadcast(intent);
-			if(DBG) System.out.println("WholeMenu sendBroadcast");
+			if(DBG) System.out.println(AMsgOnSendBroadcast);
 			Toast.makeText(mContext.getApplicationContext(),
 					"Vibrate setting...", Toast.LENGTH_SHORT).show();
 		} else if (item.getItemId() == X_Menu.EXIT) { 
 			Intent intent = new Intent();
 			intent.setAction(MENU_EXIT);
 			mContext.sendBroadcast(intent);
-			System.out.println("WholeMenu sendBroadcast");
+			System.out.println(AMsgOnSendBroadcast);
 		} else if (item.getItemId() == X_Menu.IPSETUP) { 
 			final EditText ipsetup = new EditText(mContext);
 			ipsetup.setText("");
@@ -155,7 +157,7 @@ public class X_Menu {
 										intent.putExtra(MENU_IPSETUP_IP, targetIP_str);
 										intent.putExtra(MENU_IPSETUP_PORT, targetPort);
 										mContext.sendBroadcast(intent);
-										System.out.println("WholeMenu sendBroadcast");
+										System.out.println(AMsgOnSendBroadcast);
 										Toast.makeText(
 												mContext,
 												"Now, target address is: "

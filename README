@@ -1,1 +1,6 @@
 Hi,everyone
+-----------------------Chuz Lin-----------------------------
+当前动作：修改Vibrate、Socket
+解决：Vibrate问题，Socket接口调整
+待解决：KeyAndMouse,Joystick,Socket_TCP,X_Sensor
+新增：1、按下Menu的Exit后无法退出全部Avtivity

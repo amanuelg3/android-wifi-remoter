@@ -16,13 +16,13 @@ public class Socket_TCP extends Thread implements X_Socket{
 	}
 
 	@Override
-	public void Connect() {
+	public void connect() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void Disconnect() {
+	public void disconnect() {
 		// TODO Auto-generated method stub
 		
 	}

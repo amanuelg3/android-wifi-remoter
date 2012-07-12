@@ -49,9 +49,10 @@ public class Remote_x_Start extends X_Activity implements OnClickListener{
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
+		mVibrator.cancel();
 		if(isFirstOpen){
 			isFirstOpen = false;
-			mSocket.destroy();
+			mSocket.disconnect();
 		}
 //	    if (adView != null) {              //admob
 //    	      adView.destroy();            //admob
@@ -63,7 +64,6 @@ public class Remote_x_Start extends X_Activity implements OnClickListener{
 	public void onBackPressed() {
 		// TODO Auto-generated method stubs
 		super.onBackPressed();
-		finish();
 	}
 	
 	private void checkconnection() {
