@@ -1,4 +1,4 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
 public interface X_Socket {
 	

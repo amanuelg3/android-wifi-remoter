@@ -1,4 +1,4 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
 
 public class Socket_TCP extends Thread implements X_Socket{

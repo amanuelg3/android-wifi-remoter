@@ -1,4 +1,4 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

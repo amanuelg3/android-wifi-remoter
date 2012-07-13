@@ -1,5 +1,6 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
+import xmlcz.Remote_x.R;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

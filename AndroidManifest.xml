@@ -30,7 +30,7 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name=".JoyStick"
+            android:name="com.remoter.mobile.JoyStick"
             android:label="@string/JoyStick_activity_name"
             android:screenOrientation="landscape" >
         </activity>

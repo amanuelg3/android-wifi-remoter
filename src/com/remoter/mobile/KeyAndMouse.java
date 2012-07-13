@@ -1,5 +1,6 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
+import xmlcz.Remote_x.R;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;

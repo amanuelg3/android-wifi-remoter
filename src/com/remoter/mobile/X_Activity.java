@@ -1,4 +1,4 @@
-package xmlcz.Remote_x;
+package com.remoter.mobile;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
