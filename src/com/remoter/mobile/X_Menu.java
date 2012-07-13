@@ -1,6 +1,5 @@
 package com.remoter.mobile;
 
-import xmlcz.Remote_x.R;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;

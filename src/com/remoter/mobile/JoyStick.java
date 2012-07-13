@@ -1,6 +1,5 @@
 package com.remoter.mobile;
 
-import xmlcz.Remote_x.R;
 import android.os.Bundle;
 
 public class JoyStick extends X_Activity{

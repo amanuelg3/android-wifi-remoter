@@ -1,8 +1,6 @@
 package com.remoter.mobile;
 
-import xmlcz.Remote_x.R;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -10,7 +8,8 @@ import android.widget.SlidingDrawer;
 
 public class KeyAndMouse extends X_Activity {
 	/** Called when the activity is first created. */
-	private String KeyFlag = "k";
+	private String KEY_FLAG = "k";
+	private String MOUSE_FLAG = "m";
 
 	public SlidingDrawer slidingdrawer;
 	// keyboard line 1
@@ -311,7 +310,7 @@ public class KeyAndMouse extends X_Activity {
 			// TODO Auto-generated method stub
 			vibrate();
 			Button btn = (Button) v;
-			String cmd = KeyFlag + btn.getText().toString();
+			String cmd = KEY_FLAG + btn.getText().toString();
 			mSocket.sendData(cmd);
 		}
 	}
