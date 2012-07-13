@@ -9,18 +9,18 @@ import java.net.UnknownHostException;
 
 public class Socket_UDP extends Thread implements X_Socket{
 
-	protected boolean DBG = true;
+	private boolean DBG = true;
 	
-	protected DatagramSocket mSocket_UDP;
-	protected DatagramPacket mPacket_UDP;
-	protected static int DATA_MAX_LENTH =128;
-	protected byte[] data = new byte[DATA_MAX_LENTH];
+	private DatagramSocket mSocket_UDP;
+	private DatagramPacket mPacket_UDP;
+	private static int DATA_MAX_LENTH =128;
+	private byte[] data = new byte[DATA_MAX_LENTH];
 	
-	protected String targetIP_str;
-	protected InetAddress targetIP;
-	protected int targetPort;
-	protected String locateIP_str;
-	protected int locatePort;
+	private String targetIP_str;
+	private InetAddress targetIP;
+	private int targetPort;
+	private String locateIP_str;
+	private int locatePort;
 	
 	private String Socketopen = "open";
 	private String Socketclose = "close";
