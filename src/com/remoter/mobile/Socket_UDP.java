@@ -8,7 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 public class Socket_UDP extends Thread implements X_Socket{
-
+	
 	private boolean DBG = true;
 	
 	private DatagramSocket mSocket_UDP;
@@ -47,6 +47,26 @@ public class Socket_UDP extends Thread implements X_Socket{
 		// TODO Auto-generated method stub
 		super.start();
 		if(DBG) System.out.println("init socket.");
+		connect();
+	}
+	
+	public void PacketSetup(String ip,int port){ 
+		try {
+			targetIP = InetAddress.getByName(ip);
+			targetPort = port;
+			mPacket_UDP.setAddress(targetIP);
+			mPacket_UDP.setPort(targetPort);
+			if(DBG) System.out.println("Packet setup success.");
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			if (DBG) System.out.println("Packet setup fail.");
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void connect() {
+		// TODO Auto-generated method stub
 		//
 		try {
 			//get InetAddress by String.
@@ -68,26 +88,6 @@ public class Socket_UDP extends Thread implements X_Socket{
 		}
 		//Tell PC 
 		this.sendData(Socketopen);
-	}
-	
-	public void PacketSetup(String ip,int port){ 
-		try {
-			targetIP = InetAddress.getByName(ip);
-			targetPort = port;
-			mPacket_UDP.setAddress(targetIP);
-			mPacket_UDP.setPort(targetPort);
-			if(DBG) System.out.println("Packet setup success.");
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			if (DBG) System.out.println("Packet setup fail.");
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void connect() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

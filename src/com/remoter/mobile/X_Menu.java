@@ -147,11 +147,10 @@ public class X_Menu {
 									if (addr.indexOf(":") != -1) {
 										String targetIP_str = addr.substring(0,
 												addr.indexOf(":"));
-										int targetPort = new Integer(
+										int targetPort = Integer.valueOf(
 												addr.substring(
 														addr.indexOf(":") + 1,
-														addr.length()))
-												.intValue();
+														addr.length()));
 										Intent intent = new Intent();
 										intent.setAction(MENU_IPSETUP);
 										intent.putExtra(MENU_IPSETUP_IP, targetIP_str);

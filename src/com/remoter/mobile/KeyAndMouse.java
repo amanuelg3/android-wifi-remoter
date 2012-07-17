@@ -1,6 +1,7 @@
 package com.remoter.mobile;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -292,18 +293,17 @@ public class KeyAndMouse extends X_Activity {
 		Btn611.setOnClickListener(new BtnOnClick());
 	}
 
-	//
-	// public boolean onTouchEvent(MotionEvent event) {
-	// // TODO Auto-generated method stub
-	// command = "m"; //the mouse sign
-	// if(mouseTchSw){
-	// if(event.getAction() == MotionEvent.ACTION_DOWN) command += "d";
-	// if(event.getAction() == MotionEvent.ACTION_UP) command += "u";
-	// command += "x" + event.getX() + "y" + event.getY();
-	// handler.post(send_r);
-	// }
-	// return super.onTouchEvent(event);
-	// }
+	
+	public boolean onTouchEvent(MotionEvent event) {
+	// TODO Auto-generated method stub
+	    String cmd = "";
+	 	cmd += MOUSE_FLAG;
+	    if(event.getAction() == MotionEvent.ACTION_DOWN) cmd += "d";
+	 	else if(event.getAction() == MotionEvent.ACTION_UP) cmd += "u";
+	 	cmd += "x" + event.getX() + "y" + event.getY();
+	 	mSocket.sendData(cmd);
+	 	return super.onTouchEvent(event);
+	}
 
 	class BtnOnClick implements OnClickListener {
 		public void onClick(View v) {
