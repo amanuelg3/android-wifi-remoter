@@ -7,9 +7,12 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import android.util.Log;
+
 public class Socket_UDP extends Thread implements X_Socket{
 	
 	private boolean DBG = true;
+	private String TAG = "Socket_UDP";
 	
 	private DatagramSocket mSocket_UDP;
 	private DatagramPacket mPacket_UDP;
@@ -46,7 +49,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 	public synchronized void start() {
 		// TODO Auto-generated method stub
 		super.start();
-		if(DBG) System.out.println("init socket.");
+		if(DBG) Log.i(TAG,"init socket.");
 		connect();
 	}
 	
@@ -56,10 +59,10 @@ public class Socket_UDP extends Thread implements X_Socket{
 			targetPort = port;
 			mPacket_UDP.setAddress(targetIP);
 			mPacket_UDP.setPort(targetPort);
-			if(DBG) System.out.println("Packet setup success.");
+			if(DBG) Log.i(TAG,"Packet setup success.");
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
-			if (DBG) System.out.println("Packet setup fail.");
+			if (DBG) Log.i(TAG,"Packet setup fail.");
 			e.printStackTrace();
 		}
 	}
@@ -74,13 +77,13 @@ public class Socket_UDP extends Thread implements X_Socket{
 			// Constructs a UDP datagram socket which is bound to the specific port aPort on the localhost. 
 			mSocket_UDP = new DatagramSocket(locatePort); 
 			if (DBG)
-				System.out.println("mSocket created.");
+				Log.i(TAG,"mSocket created.");
 			//Constructs a new DatagramPacket object to send data to the port aPort of the address host. 
 			mPacket_UDP = new DatagramPacket(data,DATA_MAX_LENTH,targetIP, targetPort);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			if (DBG)
-				System.out.println("mSocket create fail.");
+				Log.i(TAG,"mSocket create fail.");
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -105,11 +108,11 @@ public class Socket_UDP extends Thread implements X_Socket{
 		try {
 			mSocket_UDP.send(mPacket_UDP);
 			if (DBG)
-				System.out.println("mSocket send \""+ Data + "\" success.\n");
+				Log.i(TAG,"mSocket send \""+ Data + "\" success.\n");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if (DBG)
-				System.out.println("mSocket send fail.");
+				Log.i(TAG,"mSocket send fail.");
 			e.printStackTrace();
 		}
 	}
@@ -122,10 +125,10 @@ public class Socket_UDP extends Thread implements X_Socket{
 			mSocket_UDP.setSoTimeout(100);
 			mSocket_UDP.receive(Packet);
 			Data = new String(Packet.getData(),Packet.getOffset(),Packet.getLength());
-			if(DBG)	System.out.println(Data+"<<");
+			if(DBG)	Log.i(TAG,Data+"<<");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			if(DBG) System.out.println("receiveData error.");
+			if(DBG) Log.i(TAG,"receiveData error.");
 			e.printStackTrace();
 		}
 		return Data;
@@ -134,7 +137,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 	@Override
 	public String getAddr(){
 		String tmp = locateIP_str + ":" + String.valueOf(locatePort);
-		if(DBG) System.out.println("addr: " + tmp);
+		if(DBG) Log.i(TAG,"addr: " + tmp);
 		return tmp;
 	}
 	
@@ -150,7 +153,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 		sendData(Socketclose);
 		mSocket_UDP.close();
 		if (DBG)
-			System.out.println("mSocket close.");
+			Log.i(TAG,"mSocket close.");
 	}
 
 }

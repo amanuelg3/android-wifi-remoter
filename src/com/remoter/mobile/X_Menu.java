@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 public class X_Menu {
 	
 	private boolean DBG = true;
+	private String TAG = "X_Menu";
 	
 	private Context mContext;
 	private static final int ABOUT = 1;
@@ -22,16 +24,21 @@ public class X_Menu {
 	private static final int VIBATRE = 4;
 	private static final int IPSETUP = 5;
 	private static final int SOURCEMODE = 6;
-	private static final int CONTROLMODE = 7;
+	private static final int CONTROLMODE = 7;  //choose control pc mode:key&mouse or joystick or other.
 	
 	
 	public static final String MENU_EXIT = "EXIT";
 	public static final String MENU_IPSETUP = "IPSETP";
 	public static final String MENU_IPSETUP_IP = "targetIP_str";
 	public static final String MENU_IPSETUP_PORT = "targetPort";
-	public static final String MENU_VIBRATE = "vibrate_setup";
+	public static final String MENU_VIBRATE = "vibrate_setup"; 
 	
-	private String AMsgOnSendBroadcast = "X_Menu send Broadcast.";
+	public static final String MENU_SOURCEMODE = "sourcemode_setup"; //choose control source: touch or sensor
+	public static final String TheSourceMode = "TheSourceMode";
+	public static final int TouchMode = 1;
+	public static final int SensorMode = 2;
+	
+	private String AMsgAboutSendBroadcast = "X_Menu send Broadcast.";
 	
 	public X_Menu() {
 		
@@ -118,17 +125,16 @@ public class X_Menu {
 			AlertDialog alert = b.create();
 			alert.show();
 		} else if (item.getItemId() == X_Menu.VIBATRE) { 
-			Intent intent = new Intent();
-			intent.setAction(MENU_VIBRATE);
-			mContext.sendBroadcast(intent);
-			if(DBG) System.out.println(AMsgOnSendBroadcast);
+			
+			SendBroadcastToTellX_Activity(MENU_VIBRATE);
+			
 			Toast.makeText(mContext.getApplicationContext(),
 					"Vibrate setting...", Toast.LENGTH_SHORT).show();
+			
 		} else if (item.getItemId() == X_Menu.EXIT) { 
-			Intent intent = new Intent();
-			intent.setAction(MENU_EXIT);
-			mContext.sendBroadcast(intent);
-			System.out.println(AMsgOnSendBroadcast);
+			
+			SendBroadcastToTellX_Activity(MENU_EXIT);
+			
 		} else if (item.getItemId() == X_Menu.IPSETUP) { 
 			final EditText ipsetup = new EditText(mContext);
 			ipsetup.setText("");
@@ -156,7 +162,7 @@ public class X_Menu {
 										intent.putExtra(MENU_IPSETUP_IP, targetIP_str);
 										intent.putExtra(MENU_IPSETUP_PORT, targetPort);
 										mContext.sendBroadcast(intent);
-										System.out.println(AMsgOnSendBroadcast);
+										Log.i(TAG,AMsgAboutSendBroadcast);
 										Toast.makeText(
 												mContext,
 												"Now, target address is: "
@@ -197,8 +203,9 @@ public class X_Menu {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// TODO Auto-generated method stub
-									// mouseTchSw = true;
-									// cp.acce.Acce_onPause();
+									
+									SendBroadcastToTellX_Activity(MENU_SOURCEMODE, TheSourceMode, TouchMode);
+									
 								}
 							})
 					.setNegativeButton(
@@ -208,40 +215,9 @@ public class X_Menu {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// TODO Auto-generated method stub
-									// mouseTchSw = false;
-									// cp.acce.Acce_onResume();
-								}
-							}).create();
-			a.show();
-		} else if (item.getItemId() == X_Menu.CONTROLMODE) {
-			AlertDialog.Builder b = new AlertDialog.Builder(mContext);
-			AlertDialog a = b
-					.setIcon(R.drawable.ic_menu_manage)
-					.setTitle(
-							mContext.getResources().getString(
-									R.string.controlmode_title))
-					.setPositiveButton(
-							mContext.getResources().getString(
-									R.string.controlmode_btn_keyandmouse),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent();
-									intent.setClass(mContext, KeyAndMouse.class);
-									mContext.startActivity(intent);
-								}
-							})
-					.setNegativeButton(
-							mContext.getResources().getString(
-									R.string.controlmode_btn_joystick),
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// TODO Auto-generated method stub
-									Intent intent = new Intent();
-									intent.setClass(mContext, JoyStick.class);
-									mContext.startActivity(intent);
+									
+									SendBroadcastToTellX_Activity(MENU_SOURCEMODE, TheSourceMode, SensorMode);
+									
 								}
 							}).create();
 			a.show();
@@ -249,6 +225,18 @@ public class X_Menu {
 		return item;
 	}
 	
+	private void SendBroadcastToTellX_Activity(String action){
+		Intent intent = new Intent();
+		intent.setAction(action);
+		if(DBG) Log.i(TAG,AMsgAboutSendBroadcast);
+		mContext.sendBroadcast(intent);
+	}
 	
-	
+	private void SendBroadcastToTellX_Activity(String action,String name,int value){
+		Intent intent = new Intent();
+		intent.setAction(action);
+		intent.putExtra(name, value);
+		if(DBG) Log.i(TAG,AMsgAboutSendBroadcast + ": " + action);
+		mContext.sendBroadcast(intent);
+	}
 }

@@ -5,10 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -16,7 +18,8 @@ import android.view.WindowManager;
 
 public class X_Activity extends Activity {
 	
-	public static boolean DBG = true;
+	private static boolean DBG = true;
+	private static String TAG = "X_Activity";
 	
 	private X_Menu mMenu;
 	
@@ -36,7 +39,9 @@ public class X_Activity extends Activity {
 	protected static String locateIP_str;
 	protected static int locatePort;
 	
-	private String AMsgOnReceiveBroadcast = "X_Activity receive Broadcast.";
+	protected X_Sensor mSensor;
+	private int TheSourceMode = X_Menu.TouchMode;
+	private String TheMsgAboutReceiveBroadcastis = "X_Activity receive Broadcast";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,8 +50,6 @@ public class X_Activity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         		WindowManager.LayoutParams.FLAG_FULLSCREEN);//…Ë÷√»´∆¡ 
         
-        mMenu = new X_Menu(X_Activity.this);
-
         if(!isFirstOpen){
         	isFirstOpen = true;
         	//---------------------vibrate----------------------
@@ -67,10 +70,14 @@ public class X_Activity extends Activity {
         	mSocket.start();
         }
         
+        mMenu = new X_Menu(X_Activity.this);
+        mSensor = new X_Sensor((SensorManager) getSystemService(Context.SENSOR_SERVICE),mSocket);
+        
         filter = new IntentFilter();
         filter.addAction(X_Menu.MENU_EXIT);
         filter.addAction(X_Menu.MENU_IPSETUP);
         filter.addAction(X_Menu.MENU_VIBRATE);
+        filter.addAction(X_Menu.MENU_SOURCEMODE);
         mCmd = new MenuCmd();
     }
 	
@@ -81,6 +88,9 @@ public class X_Activity extends Activity {
 			MenuCmdisRegister = true;
 			registerReceiver(mCmd, filter);
 		}
+		if(TheSourceMode == X_Menu.SensorMode){
+			mSensor.Sensors_register();
+		}
 		super.onResume();
 	}
 	
@@ -90,6 +100,9 @@ public class X_Activity extends Activity {
 		if(MenuCmdisRegister){
 			MenuCmdisRegister = false;
 			unregisterReceiver(mCmd);
+		}
+		if(TheSourceMode == X_Menu.SensorMode){
+			mSensor.Sensors_unregister();
 		}
 		super.onPause();
 	}
@@ -103,7 +116,7 @@ public class X_Activity extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if(DBG) System.out.println("destroy.");
+		if(DBG) Log.i(TAG,"destroy.");
 		super.onDestroy();
 	}
 
@@ -113,7 +126,7 @@ public class X_Activity extends Activity {
 		// TODO Auto-generated method stub
 		vibrate();
 		super.finish();
-		if(DBG) System.out.println("finish.");
+		if(DBG) Log.i(TAG,"finish.");
 	}
 
 	public static void vibrate(){
@@ -145,20 +158,27 @@ public class X_Activity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
-			if(DBG) System.out.println(AMsgOnReceiveBroadcast);
+			if(DBG) Log.i(TAG,TheMsgAboutReceiveBroadcastis+": "+intent.getAction());
 			
 			if(intent.getAction().equals(X_Menu.MENU_EXIT)){
-				if(DBG) System.out.println(X_Menu.MENU_EXIT);
 				finish();
+			}else if(intent.getAction().equals(X_Menu.MENU_VIBRATE)){
+				if(enadleVibrator)enadleVibrator = false;
+				else enadleVibrator = true;
 			}else if(intent.getAction().equals(X_Menu.MENU_IPSETUP)){
-				if(DBG) System.out.println(X_Menu.MENU_IPSETUP);
 				String ip = intent.getExtras().getString(X_Menu.MENU_IPSETUP_IP);
 				int port = intent.getExtras().getInt(X_Menu.MENU_IPSETUP_PORT);
 				mSocket.PacketSetup(ip, port);
-			}else if(intent.getAction().equals(X_Menu.MENU_VIBRATE)){
-				if(DBG) System.out.println(X_Menu.MENU_VIBRATE);
-				if(enadleVibrator)enadleVibrator = false;
-				else enadleVibrator = true;
+			}else if(intent.getAction().equals(X_Menu.MENU_SOURCEMODE)){
+				if(intent.getIntExtra(X_Menu.TheSourceMode, X_Menu.TouchMode) == X_Menu.TouchMode){
+					if(DBG) Log.i(TAG,"touch");
+					TheSourceMode = X_Menu.TouchMode;
+					mSensor.Sensors_unregister();
+				}else{
+					if(DBG) Log.i(TAG,"sensor");
+					TheSourceMode = X_Menu.SensorMode;
+					mSensor.Sensors_register();
+				}
 			}
 		}
 	}
