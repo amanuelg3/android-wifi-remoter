@@ -4,14 +4,18 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class Remote_x_Start extends X_Activity implements OnClickListener{
 
+	private static boolean DBG = true;
+	private static String TAG = "Remote_x_Start";
+	
 	protected MenuCmd mCmd;
-	private String CheckOK = "checkconnection";
+	private static String CheckSignal = "Hi,I am here.";
 	private Button kButton;
 	private Button jButton;
 //	LinearLayout linearLayout;      //admob
@@ -22,7 +26,7 @@ public class Remote_x_Start extends X_Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.remote_x_start);
 		vibrate();
-		checkconnection();
+		SearchSever();
 		kButton = (Button)findViewById(R.id.keyandmouse);
 		kButton.setOnClickListener(this);
 		jButton = (Button)findViewById(R.id.joystick);
@@ -66,10 +70,12 @@ public class Remote_x_Start extends X_Activity implements OnClickListener{
 		super.onBackPressed();
 	}
 	
-	private void checkconnection() {
-		mSocket.sendData(CheckOK);
-		mSocket.sendData(mSocket.getAddr());
-		if (!mSocket.receiveData().equals(CheckOK)){
+	private void SearchSever() {
+		String tmp;
+		int trytime = 3;
+		while(!((tmp = mSocket.receiveData()).equals(CheckSignal))&&(trytime>0))trytime--;
+		
+		if (!tmp.equals(CheckSignal)){
 			AlertDialog.Builder b = new AlertDialog.Builder(Remote_x_Start.this);
 			AlertDialog a = b
 					.setMessage(
@@ -96,6 +102,11 @@ public class Remote_x_Start extends X_Activity implements OnClickListener{
 								}
 							}).create();
 			a.show();
+		}else {
+			if(DBG) Log.i(TAG,mSocket.getTargetAddr());
+			mSocket.PacketSetup(mSocket.getTargetAddr());
+			mSocket.sendData(CheckSignal);
 		}
 	}
+	
 }

@@ -41,7 +41,7 @@ public class Socket_TCP extends Thread implements X_Socket{
 	}
 
 	@Override
-	public void PacketSetup(String ip, int port) {
+	public void PacketSetup(String addr) {
 		// TODO Auto-generated method stub
 		
 	}

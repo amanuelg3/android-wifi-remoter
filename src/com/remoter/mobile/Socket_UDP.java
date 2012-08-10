@@ -14,8 +14,10 @@ public class Socket_UDP extends Thread implements X_Socket{
 	private boolean DBG = true;
 	private String TAG = "Socket_UDP";
 	
+	private int SocketTimeout = 500;
 	private DatagramSocket mSocket_UDP;
 	private DatagramPacket mPacket_UDP;
+	private DatagramPacket mPacket_UDP_R;
 	private static int DATA_MAX_LENTH =128;
 	private byte[] data = new byte[DATA_MAX_LENTH];
 	
@@ -25,8 +27,8 @@ public class Socket_UDP extends Thread implements X_Socket{
 	private String locateIP_str;
 	private int locatePort;
 	
-	private String Socketopen = "open";
-	private String Socketclose = "close";
+	private String Socketopen = "clientopen";
+	private String Socketclose = "clientisclose.";
  
 	public Socket_UDP() {
 		//-------------------default values-----------------------
@@ -53,10 +55,10 @@ public class Socket_UDP extends Thread implements X_Socket{
 		connect();
 	}
 	
-	public void PacketSetup(String ip,int port){ 
+	public void PacketSetup(String addr){ 
 		try {
-			targetIP = InetAddress.getByName(ip);
-			targetPort = port;
+			targetIP = InetAddress.getByName(addr.substring(0, addr.indexOf(':')));
+			targetPort = Integer.valueOf(addr.substring(addr.indexOf(':') + 1,addr.length()));
 			mPacket_UDP.setAddress(targetIP);
 			mPacket_UDP.setPort(targetPort);
 			if(DBG) Log.i(TAG,"Packet setup success.");
@@ -80,6 +82,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 				Log.i(TAG,"mSocket created.");
 			//Constructs a new DatagramPacket object to send data to the port aPort of the address host. 
 			mPacket_UDP = new DatagramPacket(data,DATA_MAX_LENTH,targetIP, targetPort);
+			mPacket_UDP_R = new DatagramPacket(data, DATA_MAX_LENTH);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			if (DBG)
@@ -118,14 +121,13 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 	
 	public String receiveData(){
-		String Data ="";
-		byte[] datatmp = new byte[DATA_MAX_LENTH];
-		DatagramPacket Packet = new DatagramPacket(datatmp,DATA_MAX_LENTH);
+		String Data =" ";
 		try {
-			mSocket_UDP.setSoTimeout(100);
-			mSocket_UDP.receive(Packet);
-			Data = new String(Packet.getData(),Packet.getOffset(),Packet.getLength());
-			if(DBG)	Log.i(TAG,Data+"<<");
+			mSocket_UDP.setSoTimeout(SocketTimeout);
+			mSocket_UDP.receive(mPacket_UDP_R);
+			
+			Data = new String(mPacket_UDP_R.getData(),mPacket_UDP_R.getOffset(),mPacket_UDP_R.getLength());
+			if(DBG)	Log.i(TAG,"receiveData: " + Data);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if(DBG) Log.i(TAG,"receiveData error.");
@@ -139,6 +141,10 @@ public class Socket_UDP extends Thread implements X_Socket{
 		String tmp = locateIP_str + ":" + String.valueOf(locatePort);
 		if(DBG) Log.i(TAG,"addr: " + tmp);
 		return tmp;
+	}
+	
+	public String getTargetAddr(){
+		return mPacket_UDP_R.getAddress().toString().substring(1)+":"+mPacket_UDP_R.getPort();
 	}
 	
 	@Override

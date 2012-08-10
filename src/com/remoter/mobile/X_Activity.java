@@ -168,7 +168,7 @@ public class X_Activity extends Activity {
 			}else if(intent.getAction().equals(X_Menu.MENU_IPSETUP)){
 				String ip = intent.getExtras().getString(X_Menu.MENU_IPSETUP_IP);
 				int port = intent.getExtras().getInt(X_Menu.MENU_IPSETUP_PORT);
-				mSocket.PacketSetup(ip, port);
+				mSocket.PacketSetup(ip+":"+port);
 			}else if(intent.getAction().equals(X_Menu.MENU_SOURCEMODE)){
 				if(intent.getIntExtra(X_Menu.TheSourceMode, X_Menu.TouchMode) == X_Menu.TouchMode){
 					if(DBG) Log.i(TAG,"touch");
