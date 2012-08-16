@@ -81,7 +81,6 @@ public class X_Sensor implements SensorEventListener {
 				float tmp_y = (float) (Math.toDegrees(-1*vx) * 768 / 90.0);
 				command = "mx" + tmp_x + "y" + tmp_y;
 			} else {
-				
 				command = "max" + Math.toDegrees(vz) + "y" + Math.toDegrees(vx);
 			}
 			mSocket.sendData(command);

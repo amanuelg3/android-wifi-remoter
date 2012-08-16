@@ -10,6 +10,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,6 +44,8 @@ public class X_Activity extends Activity {
 	private int TheSourceMode = X_Menu.TouchMode;
 	private String TheMsgAboutReceiveBroadcastis = "X_Activity receive Broadcast";
 	
+	public static int Screen_x,Screen_y;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,8 @@ public class X_Activity extends Activity {
         	//---------------------init socket--------------------
         	mSocket = new Socket_UDP(targetIP_str,targetPort,locateIP_str,locatePort);
         	mSocket.start();
+        	//---------------------screen size-------------------
+        	getScreenSize();
         }
         
         mMenu = new X_Menu(X_Activity.this);
@@ -135,6 +140,12 @@ public class X_Activity extends Activity {
 //		if(enadleVibrator) mVibrator.vibrate(i, 10);
 	}
 
+	public void getScreenSize(){
+		 DisplayMetrics metrics = new DisplayMetrics();
+		 getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		 Screen_x = metrics.heightPixels;
+		 Screen_y = metrics.widthPixels;
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub

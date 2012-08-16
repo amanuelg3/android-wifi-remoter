@@ -24,7 +24,6 @@ public class X_Menu {
 	private static final int VIBATRE = 4;
 	private static final int IPSETUP = 5;
 	private static final int SOURCEMODE = 6;
-	private static final int CONTROLMODE = 7;  //choose control pc mode:key&mouse or joystick or other.
 	
 	
 	public static final String MENU_EXIT = "EXIT";
@@ -127,9 +126,6 @@ public class X_Menu {
 		} else if (item.getItemId() == X_Menu.VIBATRE) { 
 			
 			SendBroadcastToTellX_Activity(MENU_VIBRATE);
-			
-			Toast.makeText(mContext.getApplicationContext(),
-					"Vibrate setting...", Toast.LENGTH_SHORT).show();
 			
 		} else if (item.getItemId() == X_Menu.EXIT) { 
 			
