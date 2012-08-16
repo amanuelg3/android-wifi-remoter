@@ -143,8 +143,8 @@ public class X_Activity extends Activity {
 	public void getScreenSize(){
 		 DisplayMetrics metrics = new DisplayMetrics();
 		 getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		 Screen_x = metrics.heightPixels;
-		 Screen_y = metrics.widthPixels;
+		 Screen_x = metrics.widthPixels;
+		 Screen_y = metrics.heightPixels;
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -101,7 +101,7 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 			// TODO Auto-generated method stub
 			if (!values[0].booleanValue())
 				showDialog();
-			    initbar.setVisibility(View.GONE);
+			initbar.setVisibility(View.GONE);
 			isStart = true;
 			super.onProgressUpdate(values);
 		}

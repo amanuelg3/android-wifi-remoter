@@ -20,6 +20,9 @@ public class KeyAndMouse extends X_Activity {
 
 	private String KEY_FLAG = "k";
 	private String MOUSE_FLAG = "m";
+	private String MOUSE_CLICKDOWN = "cd";
+	private String MOUSE_CLICKUP = "cu";
+	private boolean isClick = false;
 	private boolean KEY_MODE = false;
 
 	public SlidingDrawer slidingdrawer;
@@ -125,7 +128,7 @@ public class KeyAndMouse extends X_Activity {
 		setContentView(R.layout.keyandmouse);
 		// talk to PC that I am in keyandmouse mode.
 		mSocket.sendData("keyandmouse");
-		
+		sendSetupParams(25);
 		// init components
 		slidingdrawer = (SlidingDrawer) findViewById(R.id.controler_switch);
 		title = (TextView)findViewById(R.id.title);
@@ -336,16 +339,14 @@ public class KeyAndMouse extends X_Activity {
 	private void ScaleSetupView_init(){
 		sbrmousescale = (SeekBar)findViewById(R.id.sbrmousescale);
 		sbrmousescale.setMax(100);
-		sbrmousescale.setProgress(50);
+		sbrmousescale.setProgress(25);
 		sbrmousescale.setVisibility(SeekBar.GONE);
 		sbrmousescale.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				   String data = "s";
-				   data += "x" + Screen_x + "y"+ Screen_y + "s" +seekBar.getProgress();
-				  mSocket.sendData(data);
+				   sendSetupParams(seekBar.getProgress());
 			}
 			
 			@Override
@@ -378,21 +379,44 @@ public class KeyAndMouse extends X_Activity {
 		});
 	}
 	
+	private void sendSetupParams(int params){
+		   String data = "s";
+		   data += "x" + Screen_x + "y"+ Screen_y + "s" +params;
+		   mSocket.sendData(data);
+	}
+	
 	public boolean onTouchEvent(MotionEvent event) {
+		String flag ="";
 		// TODO Auto-generated method stub
+		if(!SBRisHide){
+			SBRisHide = true;
+			sbrmousescale.setVisibility(SeekBar.GONE);
+		}
 		if (!KEY_MODE) {
-			String cmd = "";
-			cmd += MOUSE_FLAG;
+			if((isClick)&&(event.getPointerCount()==1)){
+				isClick = false;
+				sendMousecmd(MOUSE_CLICKUP);
+			}
+			if((!isClick)&&(event.getPointerCount()==2)){
+				isClick = true;
+				sendMousecmd(MOUSE_CLICKDOWN);
+			}
 			if (event.getAction() == MotionEvent.ACTION_DOWN)
-				cmd += "d";
+				flag = "d";
 			else if (event.getAction() == MotionEvent.ACTION_UP)
-				cmd += "u";
-			cmd += "x" + event.getX() + "y" + event.getY();
-			mSocket.sendData(cmd);
+				flag = "u";
+			sendMousecmd(flag+"x" + event.getX() + "y" + event.getY());
+			
 		}
 		return super.onTouchEvent(event);
 	}
 
+	private void sendMousecmd(String cmddata){
+		String cmd = "";
+		cmd += MOUSE_FLAG;
+		mSocket.sendData(cmd+cmddata);
+	}
+	
 	class BtnOnClick implements OnClickListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
