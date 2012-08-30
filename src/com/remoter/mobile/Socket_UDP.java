@@ -14,11 +14,11 @@ public class Socket_UDP extends Thread implements X_Socket{
 	private boolean DBG = true;
 	private String TAG = "Socket_UDP";
 	
-	private int SocketTimeout = 500;
+	private int SocketTimeout = 500;  //接收超时时间
 	private DatagramSocket mSocket_UDP;
 	private DatagramPacket mPacket_UDP;
 	private DatagramPacket mPacket_UDP_R;
-	private static int DATA_MAX_LENTH =128;
+	private static int DATA_MAX_LENTH =128;  
 	private byte[] data = new byte[DATA_MAX_LENTH];
 	
 	private String targetIP_str;
@@ -27,8 +27,8 @@ public class Socket_UDP extends Thread implements X_Socket{
 	private String locateIP_str;
 	private int locatePort;
 	
-	private String Socketopen = "clientopen";
-	private String Socketclose = "clientisclose.";
+	private String Socketopen = "clientopen";  //Socket通路后的发送的一个信号
+	private String Socketclose = "clientisclose.";  //Socket关闭后的发送的一个信号
  
 	public Socket_UDP() {
 		//-------------------default values-----------------------
@@ -55,7 +55,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 		connect();
 	}
 	
-	public void PacketSetup(String addr){ 
+	public void PacketSetup(String addr){ //实现该接口
 		try {
 			targetIP = InetAddress.getByName(addr.substring(0, addr.indexOf(':')));
 			targetPort = Integer.valueOf(addr.substring(addr.indexOf(':') + 1,addr.length()));
@@ -70,7 +70,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 	
 	@Override
-	public void connect() {
+	public void connect() {//实现该接口
 		// TODO Auto-generated method stub
 		//
 		try {
@@ -97,17 +97,17 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 	
 	@Override
-	public void disconnect() {
+	public void disconnect() {//实现该接口
 		// TODO Auto-generated method stub
 		destroy();
 	}
 	
-	public void sendData(String Data){
+	public void sendData(String Data){//实现该接口
 		data = null;
 		//translate String to byte array
 		data = Data.getBytes();
-		mPacket_UDP.setData(data);
-		mPacket_UDP.setLength(data.length);
+		mPacket_UDP.setData(data);//添加发送数据
+		mPacket_UDP.setLength(data.length);//设置数据长度
 		try {
 			mSocket_UDP.send(mPacket_UDP);
 			if (DBG)
@@ -115,18 +115,18 @@ public class Socket_UDP extends Thread implements X_Socket{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			if (DBG)
-				Log.i(TAG,"mSocket send fail.");
+				Log.i(TAG,"mSocket send fail.");//错误捕捉
 			e.printStackTrace();
 		}
 	}
 	
-	public String receiveData(){
+	public String receiveData(){//实现该接口：接收数据
 		String Data =" ";
 		try {
-			mSocket_UDP.setSoTimeout(SocketTimeout);
-			mSocket_UDP.receive(mPacket_UDP_R);
+			mSocket_UDP.setSoTimeout(SocketTimeout);//设置接收超时时间
+			mSocket_UDP.receive(mPacket_UDP_R);//开始监听locatePort端口
 			
-			Data = new String(mPacket_UDP_R.getData(),mPacket_UDP_R.getOffset(),mPacket_UDP_R.getLength());
+			Data = new String(mPacket_UDP_R.getData(),mPacket_UDP_R.getOffset(),mPacket_UDP_R.getLength());//将接收到的数据转化成string
 			if(DBG)	Log.i(TAG,"receiveData: " + Data);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -137,13 +137,13 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 	
 	@Override
-	public String getAddr(){
+	public String getAddr(){//返回本地地址
 		String tmp = locateIP_str + ":" + String.valueOf(locatePort);
 		if(DBG) Log.i(TAG,"addr: " + tmp);
 		return tmp;
 	}
 	
-	public String getTargetAddr(){
+	public String getTargetAddr(){//通过接收到的数据包，获取目标IP和端口
 		return mPacket_UDP_R.getAddress().toString().substring(1)+":"+mPacket_UDP_R.getPort();
 	}
 	
@@ -154,7 +154,7 @@ public class Socket_UDP extends Thread implements X_Socket{
 	}
 
 	@Override
-	public void destroy() {
+	public void destroy() { 
 		// TODO Auto-generated method stub
 		sendData(Socketclose);
 		mSocket_UDP.close();

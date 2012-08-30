@@ -18,6 +18,7 @@ public class X_Menu {
 	private String TAG = "X_Menu";
 	
 	private Context mContext;
+	//MenuId
 	private static final int ABOUT = 1;
 	private static final int CONNECT = 2;
 	private static final int EXIT = 3;
@@ -25,8 +26,8 @@ public class X_Menu {
 	private static final int IPSETUP = 5;
 	private static final int SOURCEMODE = 6;
 	
-	
-	public static final String MENU_EXIT = "EXIT";
+	//Intent Actions
+	public static final String MENU_EXIT = "EXIT"; 
 	public static final String MENU_IPSETUP = "IPSETP";
 	public static final String MENU_IPSETUP_IP = "targetIP_str";
 	public static final String MENU_IPSETUP_PORT = "targetPort";
@@ -34,6 +35,7 @@ public class X_Menu {
 	
 	public static final String MENU_SOURCEMODE = "sourcemode_setup"; //choose control source: touch or sensor
 	public static final String TheSourceMode = "TheSourceMode";
+	
 	public static final int TouchMode = 1;
 	public static final int SensorMode = 2;
 	
@@ -52,7 +54,7 @@ public class X_Menu {
 		// TODO Auto-generated method stub
 		menu.add(0, X_Menu.ABOUT, 1,
 				mContext.getResources().getString(R.string.about)).setIcon(
-				R.drawable.ic_menu_home);
+				R.drawable.ic_menu_home);   //设置菜单的图标和标题
 		menu.add(0, X_Menu.CONNECT, 1,
 				mContext.getResources().getString(R.string.connect)).setIcon(
 				R.drawable.ic_menu_refresh);
@@ -78,9 +80,9 @@ public class X_Menu {
 		return menu;
 	}
 
-	public MenuItem OptionsItemSelected(MenuItem item) {
+	public MenuItem OptionsItemSelected(MenuItem item) {//根据MenuId进行匹配后响应
 		// TODO Auto-generated method stub
-		if (item.getItemId() == X_Menu.ABOUT) { 
+		if (item.getItemId() == X_Menu.ABOUT) {  //关于程序的介绍
 			Builder b = new AlertDialog.Builder(mContext);
 			b.setTitle("About:")
 			 .setTitle(R.string.about)
@@ -88,7 +90,7 @@ public class X_Menu {
 					mContext.getResources().getString(R.string.about_content));
 			AlertDialog alert = b.create();
 			alert.show();
-		} else if (item.getItemId() == X_Menu.CONNECT) { 
+		} else if (item.getItemId() == X_Menu.CONNECT) { //链接
 			Builder b = new AlertDialog.Builder(mContext);
 			b.setCancelable(true)
 					.setIcon(R.drawable.ic_menu_refresh)
@@ -123,15 +125,15 @@ public class X_Menu {
 							});
 			AlertDialog alert = b.create();
 			alert.show();
-		} else if (item.getItemId() == X_Menu.VIBATRE) { 
+		} else if (item.getItemId() == X_Menu.VIBATRE) { //震动设置
 			
 			SendBroadcastToTellX_Activity(MENU_VIBRATE);
 			
-		} else if (item.getItemId() == X_Menu.EXIT) { 
+		} else if (item.getItemId() == X_Menu.EXIT) { //退出
 			
 			SendBroadcastToTellX_Activity(MENU_EXIT);
 			
-		} else if (item.getItemId() == X_Menu.IPSETUP) { 
+		} else if (item.getItemId() == X_Menu.IPSETUP) { //IP设置
 			final EditText ipsetup = new EditText(mContext);
 			ipsetup.setText("");
 			Builder b = new AlertDialog.Builder(mContext);
@@ -140,20 +142,20 @@ public class X_Menu {
 							mContext.getResources().getString(
 									R.string.ipsetup_title))
 					.setView(ipsetup)
-					.setPositiveButton("OK",
+					.setPositiveButton("OK",               //在EditText输入后按下OK按钮
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int id) {
-									String addr = ipsetup.getText().toString();
+									String addr = ipsetup.getText().toString();//获取你输入的地址
 									
-									if (addr.indexOf(":") != -1) {
-										String targetIP_str = addr.substring(0,
+									if (addr.indexOf(":") != -1) { //判断输入的地址格式是否正确
+										String targetIP_str = addr.substring(0, //提取IP和端口
 												addr.indexOf(":"));
 										int targetPort = Integer.valueOf(
 												addr.substring(
 														addr.indexOf(":") + 1,
 														addr.length()));
-										Intent intent = new Intent();
+										Intent intent = new Intent();//把地址通过广播发送出去
 										intent.setAction(MENU_IPSETUP);
 										intent.putExtra(MENU_IPSETUP_IP, targetIP_str);
 										intent.putExtra(MENU_IPSETUP_PORT, targetPort);
@@ -165,7 +167,7 @@ public class X_Menu {
 														+ targetIP_str + " : "
 														+ targetPort,
 												Toast.LENGTH_SHORT).show();
-									} else {
+									} else {//地址格式错误
 										Toast.makeText(
 												mContext,
 												">>>INPUT Error<<<"
@@ -185,14 +187,14 @@ public class X_Menu {
 							});
 			AlertDialog alert = b.create();
 			alert.show();
-		} else if (item.getItemId() == X_Menu.SOURCEMODE) { 
+		} else if (item.getItemId() == X_Menu.SOURCEMODE) { //选择控制源：触控或者传感器
 			AlertDialog.Builder b = new AlertDialog.Builder(mContext);
 			AlertDialog a = b
 					.setIcon(R.drawable.ic_menu_manage)
 					.setTitle(
 							mContext.getResources().getString(
 									R.string.sourcemode_title))
-					.setPositiveButton(
+					.setPositiveButton(  //触控模式
 							mContext.getResources().getString(
 									R.string.sourcemode_btn_touch),
 							new DialogInterface.OnClickListener() {
@@ -204,7 +206,7 @@ public class X_Menu {
 									
 								}
 							})
-					.setNegativeButton(
+					.setNegativeButton(//传感器模式
 							mContext.getResources().getString(
 									R.string.sourcemode_btn_sensor),
 							new DialogInterface.OnClickListener() {
@@ -221,14 +223,14 @@ public class X_Menu {
 		return item;
 	}
 	
-	private void SendBroadcastToTellX_Activity(String action){
+	private void SendBroadcastToTellX_Activity(String action){//直接发送广播
 		Intent intent = new Intent();
 		intent.setAction(action);
 		if(DBG) Log.i(TAG,AMsgAboutSendBroadcast);
 		mContext.sendBroadcast(intent);
 	}
 	
-	private void SendBroadcastToTellX_Activity(String action,String name,int value){
+	private void SendBroadcastToTellX_Activity(String action,String name,int value){//发送广播，并且携带数据
 		Intent intent = new Intent();
 		intent.setAction(action);
 		intent.putExtra(name, value);

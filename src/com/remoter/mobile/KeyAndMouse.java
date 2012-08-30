@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -122,6 +123,8 @@ public class KeyAndMouse extends X_Activity {
 	public SeekBar sbrmousescale = null;
 	private boolean SBRisHide = true;
 	
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -136,7 +139,6 @@ public class KeyAndMouse extends X_Activity {
 		Button_init();
 		
 		slidingdrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
-
 			@Override
 			public void onDrawerOpened() {
 				// TODO Auto-generated method stub
@@ -159,6 +161,8 @@ public class KeyAndMouse extends X_Activity {
 		
 	}
 
+	
+	
 	private void Button_init() {
 		// keyboard line 1
 		Btn11 = (Button) findViewById(R.id.Btn11);
@@ -426,6 +430,4 @@ public class KeyAndMouse extends X_Activity {
 			mSocket.sendData(cmd);
 		}
 	}
-
-	
 }
