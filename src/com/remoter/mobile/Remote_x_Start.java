@@ -9,7 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 public class Remote_x_Start extends X_Activity implements OnClickListener {
 
@@ -23,8 +28,8 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 	private ProgressBar initbar;  //初始化检测广播时显示的动作条
 	boolean isStart = false;         //检测时用于对按键进行锁定，即检测中按键无反应
 	
-	// LinearLayout linearLayout; //admob
-	// AdView adView ; //admob
+	 LinearLayout linearLayout; //admob
+	 AdView adView ; //admob
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,11 +42,11 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 		jButton = (Button) findViewById(R.id.joystick);   //控件绑定
 		jButton.setOnClickListener(this);  //按钮绑定监听器
 		initbar = (ProgressBar) findViewById(R.id.initing);  //控件绑定
-		// linearLayout = (LinearLayout)findViewById(R.id.linearlayout1);
-		// //admob\
-		// adView = new AdView(this, AdSize.BANNER, " a14fe4b3c976c93"); //admob
-		// linearLayout.addView(adView); //admob
-		// adView.loadAd(new AdRequest()); //admob
+		 linearLayout = (LinearLayout)findViewById(R.id.linearlayout1);
+		 //admob\
+		 adView = new AdView(this, AdSize.BANNER, " a14fe4b3c976c93"); //admob
+		 linearLayout.addView(adView); //admob
+		 adView.loadAd(new AdRequest()); //admob
 	}
 
 	@Override
@@ -67,9 +72,9 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 			isFirstOpen = false; 
 			mSocket.disconnect(); //关闭全局Socket
 		}
-		// if (adView != null) { //admob
-		// adView.destroy(); //admob
-		// } //admob
+		 if (adView != null) { //admob
+		 adView.destroy(); //admob
+		 } //admob
 		super.onDestroy();
 	}
 

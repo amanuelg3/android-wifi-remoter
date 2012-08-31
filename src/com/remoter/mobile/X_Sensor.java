@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.view.MotionEvent;
 
 public class X_Sensor implements SensorEventListener {
 
@@ -50,17 +51,20 @@ public class X_Sensor implements SensorEventListener {
 		List<Sensor> sensor;
 		if (mSensorManager.getSensorList(Sensor.TYPE_GYROSCOPE) == null) {
 			isGryo = false;
-			mSocket.sendData(MOUSE_FLAG+ACCE_FLAG+ACCE_REG);
+			mSocket.sendData(MOUSE_FLAG + ACCE_FLAG + ACCE_REG);
 			sensor = mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-			if(DBG) Log.i(TAG, "Accelerometer mode.");
+			if (DBG)
+				Log.i(TAG, "Accelerometer mode.");
 		} else {
 			isGryo = true;
-			mSocket.sendData(MOUSE_FLAG+GRYO_FLAG+GRYO_REG);
+			mSocket.sendData(MOUSE_FLAG + GRYO_FLAG + GRYO_REG);
 			sensor = mSensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);
-			if(DBG) Log.i(TAG, "Gryoscope mode.");
+			if (DBG)
+				Log.i(TAG, "Gryoscope mode.");
 		}
 		if ((sensor.size() > 0) && (!isRegister)) {
-			if (DBG) Log.i(TAG, "Sensors_register");
+			if (DBG)
+				Log.i(TAG, "Sensors_register");
 			Sensor asensor = (Sensor) sensor.get(0);
 			isRegister = mSensorManager.registerListener(this, asensor,
 					SensorManager.SENSOR_DELAY_GAME);
@@ -72,8 +76,10 @@ public class X_Sensor implements SensorEventListener {
 
 	public void Sensors_unregister() {
 		if (isRegister) {
-			if(isGryo)mSocket.sendData(MOUSE_FLAG+GRYO_FLAG+GRYO_UNREG);
-			else mSocket.sendData(MOUSE_FLAG+ACCE_FLAG+ACCE_REG);
+			if (isGryo)
+				mSocket.sendData(MOUSE_FLAG + GRYO_FLAG + GRYO_UNREG);
+			else
+				mSocket.sendData(MOUSE_FLAG + ACCE_FLAG + ACCE_UNREG);
 			mSensorManager.unregisterListener(this);
 			isRegister = false;
 			if (DBG)
@@ -81,10 +87,10 @@ public class X_Sensor implements SensorEventListener {
 		}
 	}
 
-	public void resetSensorData(){
-		vx = (float)0.0;
-		vy = (float)0.0;
-		vz = (float)0.0;
+	public void resetSensorData() {
+		vx = (float) 0.0;
+		vy = (float) 0.0;
+		vz = (float) 0.0;
 	}
 	
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -101,44 +107,50 @@ public class X_Sensor implements SensorEventListener {
 				vx += axisX * dT;
 				vy += axisY * dT;
 				vz += axisZ * dT;
-//				float tmp_x = (float) (Math.toDegrees(-1*vz) * 1366 / 90.0);
-//				float tmp_y = (float) (Math.toDegrees(-1*vx) * 768 / 90.0);
-//				command = "mx" + tmp_x + "y" + tmp_y;
-				command = "mgx" + Math.toDegrees(-1*vz) + "y" + Math.toDegrees(-1*vx);
+				command = MOUSE_FLAG + GRYO_FLAG + "x"
+						+ Math.toDegrees(-1 * vz) + "y"
+						+ Math.toDegrees(-1 * vx);
 			} else {
-				command = "max" + Math.toDegrees(vz) + "y" + Math.toDegrees(vx);
+				command = MOUSE_FLAG + ACCE_FLAG + "x" + Math.toDegrees(vz)
+						+ "y" + Math.toDegrees(vx);
 			}
 			mSocket.sendData(command);
 		}
 		timestamp = event.timestamp;
 	}
-	
-	public void leftclick(){
-		if(isGryo){
-			command = MOUSE_FLAG + GRYO_FLAG ;
+
+	public void leftclick(int ACTION) {
+		if (isGryo) {
+			if (ACTION == MotionEvent.ACTION_DOWN)
+				command = MOUSE_FLAG + GRYO_FLAG + SENSOR_LFET + SENSOR_PRESS;
+			else if (ACTION == MotionEvent.ACTION_UP)
+				command = MOUSE_FLAG + GRYO_FLAG + SENSOR_LFET + SENSOR_RELEASE;
 			mSocket.sendData(command);
-		}else{
-			command = MOUSE_FLAG + ACCE_FLAG ;
-			mSocket.sendData(command);
-		}
-	}
-	
-	public void rightclick(){
-		if(isGryo){
-			command = MOUSE_FLAG + GRYO_FLAG ;
-			mSocket.sendData(command);
-		}else{
-			command = MOUSE_FLAG + ACCE_FLAG ;
+		} else {
+			if (ACTION == MotionEvent.ACTION_DOWN)
+				command = MOUSE_FLAG + ACCE_FLAG + SENSOR_LFET + SENSOR_PRESS;
+			else if (ACTION == MotionEvent.ACTION_UP)
+				command = MOUSE_FLAG + ACCE_FLAG + SENSOR_LFET + SENSOR_RELEASE;
 			mSocket.sendData(command);
 		}
 	}
-	
-	public void midclick(){
-		if(isGryo){
-			command = MOUSE_FLAG + GRYO_FLAG ;
+
+	public void rightclick() {
+		if (isGryo) {
+			command = MOUSE_FLAG + GRYO_FLAG + SENSOR_RIGHT;
 			mSocket.sendData(command);
-		}else{
-			command = MOUSE_FLAG + ACCE_FLAG ;
+		} else {
+			command = MOUSE_FLAG + ACCE_FLAG + SENSOR_RIGHT;
+			mSocket.sendData(command);
+		}
+	}
+
+	public void midclick() {
+		if (isGryo) {
+			command = MOUSE_FLAG + GRYO_FLAG + SENSOR_MID;
+			mSocket.sendData(command);
+		} else {
+			command = MOUSE_FLAG + ACCE_FLAG + SENSOR_MID;
 			mSocket.sendData(command);
 		}
 	}

@@ -1,5 +1,7 @@
 package com.remoter.mobile;
 
+import com.google.ads.e;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -235,12 +237,18 @@ public class X_Activity extends Activity {
 				});
 
 				Button leftkey = (Button) findViewById(R.id.leftkey);
-				leftkey.setOnClickListener(new OnClickListener() {
+				leftkey.setOnTouchListener(new OnTouchListener() {
 
 					@Override
-					public void onClick(View v) {
+					public boolean onTouch(View v, MotionEvent event) {
 						// TODO Auto-generated method stub
-						mSensor.leftclick();
+						if (event.getAction() == MotionEvent.ACTION_DOWN) {
+							mSensor.Sensors_register();
+						} else if (event.getAction() == MotionEvent.ACTION_UP) {
+							mSensor.Sensors_unregister();
+						}
+						mSensor.leftclick(event.getAction());
+						return false;
 					}
 				});
 
