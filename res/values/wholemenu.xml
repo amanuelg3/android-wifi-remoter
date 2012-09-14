@@ -3,7 +3,17 @@
 
     <!-- menu -->
     <string name="about">About</string>
-    <string name="about_content">Thanks to use my App.\ne-mail:shmcclmm@gmail.com</string>
+    <string name="about_content">
+ \u0020\u0020\u0020\u0020The application began with a single question, if we don\'t have a wireless mouse or wireless keyboard can we use android phone/tablet computer to control the personal computer freely ? Without a doubt, Let\'s we use the Wireless Controller to have a try.\n
+1.Connect personal computer and  android phone/tablet computer at the same wireless network by WiFi.\n
+2.Start Server application.\n
+3.Start Wireless Controller application.\n
+and you can got it.\n
+Support:\n
+shmcclmm@gmail.com\n
+iloveameizi@gmail.com\n
+\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020Yours Sincerely.\n
+\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020Mr. Lin</string>
     <string name="connect">Connect</string>
     <string name="connect_title">"Connrect or not ? "</string>
     <string name="connect_btn_connect">Connect</string>

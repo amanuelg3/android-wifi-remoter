@@ -1,6 +1,7 @@
 package com.remoter.mobile;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,9 +23,10 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 	private static String TAG = "Remote_x_Start";
 
 	protected MenuCmd mCmd; 
-	private static String CheckSignal = "Hi,I am here.";   //用于回应PC的广播信号
+	public static String CheckSignal = "Hi,I am here.";   //用于回应PC的广播信号
 	private Button kButton;        //切换到鼠标键盘模式的按钮
-	private Button jButton;         //切换到手柄模式的按钮
+//	private Button jButton;         //切换到手柄模式的按钮
+	private Button aButton;
 	private ProgressBar initbar;  //初始化检测广播时显示的动作条
 	boolean isStart = false;         //检测时用于对按键进行锁定，即检测中按键无反应
 	
@@ -39,14 +41,17 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 		new Pre_Start().execute();         //软件运行后的一个并行任务，用于检测广播信号
 		kButton = (Button) findViewById(R.id.keyandmouse);   //绑定控件
 		kButton.setOnClickListener(this);  //按钮绑定监听器
-		jButton = (Button) findViewById(R.id.joystick);   //控件绑定
-		jButton.setOnClickListener(this);  //按钮绑定监听器
+//		jButton = (Button) findViewById(R.id.joystick);   //控件绑定
+//		jButton.setOnClickListener(this);  //按钮绑定监听器
+		aButton = (Button) findViewById(R.id.joystick);   //控件绑定,About代替手柄按键
+		aButton.setOnClickListener(this);  //按钮绑定监听器
+		aButton.setText(this.getResources().getString(R.string.about));
 		initbar = (ProgressBar) findViewById(R.id.initing);  //控件绑定
 		 linearLayout = (LinearLayout)findViewById(R.id.linearlayout1);
 		 //admob\
-		 adView = new AdView(this, AdSize.BANNER, " a14fe4b3c976c93"); //admob
-		 linearLayout.addView(adView); //admob
-		 adView.loadAd(new AdRequest()); //admob
+//		 adView = new AdView(this, AdSize.BANNER, " a14fe4b3c976c93"); //admob
+//		 linearLayout.addView(adView); //admob
+//		 adView.loadAd(new AdRequest()); //admob
 	}
 
 	@Override
@@ -57,10 +62,18 @@ public class Remote_x_Start extends X_Activity implements OnClickListener {
 			Intent intent = new Intent();  
 			if (v.getId() == R.id.keyandmouse) {  //根据按下的按钮 ID，判断是哪个按钮，然后启动相应的Activity。
 				intent.setClass(Remote_x_Start.this, KeyAndMouse.class);
+				startActivity(intent); //启动相应的Activity
 			} else if (v.getId() == R.id.joystick) {
-				intent.setClass(Remote_x_Start.this, JoyStick.class);
+//				intent.setClass(Remote_x_Start.this, JoyStick.class);
+				Builder b = new AlertDialog.Builder(this);
+				b.setTitle("About:")
+				 .setTitle(R.string.about)
+				 .setMessage(
+						this.getResources().getString(R.string.about_content));
+				AlertDialog alert = b.create();
+				alert.show();
 			}
-			startActivity(intent); //启动相应的Activity
+//			startActivity(intent); //启动相应的Activity
 		}
 	}
 

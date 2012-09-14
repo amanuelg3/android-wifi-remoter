@@ -48,7 +48,7 @@ public class X_Activity extends Activity {
 	protected static int locatePort;
 
 	protected X_Sensor mSensor;
-	private int TheSourceMode = X_Menu.TouchMode;
+	public static int TheSourceMode = X_Menu.TouchMode;
 	private String TheMsgAboutReceiveBroadcastis = "X_Activity receive Broadcast";
 
 	public static int Screen_x, Screen_y;
@@ -203,6 +203,7 @@ public class X_Activity extends Activity {
 						.getString(X_Menu.MENU_IPSETUP_IP);
 				int port = intent.getExtras().getInt(X_Menu.MENU_IPSETUP_PORT);
 				mSocket.PacketSetup(ip + ":" + port);
+				mSocket.sendData(Remote_x_Start.CheckSignal);
 			} else if (intent.getAction().equals(X_Menu.MENU_SOURCEMODE)) { // 选择触控作为控制源或者传感器作为控制源
 				if (intent.getIntExtra(X_Menu.TheSourceMode, X_Menu.TouchMode) == X_Menu.TouchMode) {
 					if (DBG)

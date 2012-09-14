@@ -1,6 +1,7 @@
 package com.remoter.mobile;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -118,13 +119,11 @@ public class KeyAndMouse extends X_Activity {
 	public Button Btn69 = null;
 	public Button Btn610 = null;
 	public Button Btn611 = null;
-	
+
 	public Button btnmousescale = null;
 	public SeekBar sbrmousescale = null;
 	private boolean SBRisHide = true;
-	
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -132,12 +131,17 @@ public class KeyAndMouse extends X_Activity {
 		// talk to PC that I am in keyandmouse mode.
 		mSocket.sendData("keyandmouse");
 		sendSetupParams(25);
+		KM_init();
+	}
+
+	protected void KM_init() {
+		// TODO Auto-generated method stub
 		// init components
 		slidingdrawer = (SlidingDrawer) findViewById(R.id.controler_switch);
-		title = (TextView)findViewById(R.id.title);
-		
+		title = (TextView) findViewById(R.id.title);
+
 		Button_init();
-		
+
 		slidingdrawer.setOnDrawerOpenListener(new OnDrawerOpenListener() {
 			@Override
 			public void onDrawerOpened() {
@@ -146,7 +150,7 @@ public class KeyAndMouse extends X_Activity {
 				title.setText(R.string.sliptoselectdown);
 			}
 		});
-		
+
 		slidingdrawer.setOnDrawerCloseListener(new OnDrawerCloseListener() {
 
 			@Override
@@ -156,13 +160,10 @@ public class KeyAndMouse extends X_Activity {
 				title.setText(R.string.sliptoselectup);
 			}
 		});
-		
-		ScaleSetupView_init();
-		
+
+		ScaleSetup_init();
 	}
 
-	
-	
 	private void Button_init() {
 		// keyboard line 1
 		Btn11 = (Button) findViewById(R.id.Btn11);
@@ -340,68 +341,68 @@ public class KeyAndMouse extends X_Activity {
 		Btn611.setOnClickListener(new BtnOnClick());
 	}
 
-	private void ScaleSetupView_init(){
-		sbrmousescale = (SeekBar)findViewById(R.id.sbrmousescale);
+	private void ScaleSetup_init() {
+		sbrmousescale = (SeekBar) findViewById(R.id.sbrmousescale);
 		sbrmousescale.setMax(100);
 		sbrmousescale.setProgress(25);
 		sbrmousescale.setVisibility(SeekBar.GONE);
 		sbrmousescale.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
+
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				   sendSetupParams(seekBar.getProgress());
+				sendSetupParams(seekBar.getProgress());
 			}
-			
+
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
-		btnmousescale = (Button)findViewById(R.id.btnmousescale);
+
+		btnmousescale = (Button) findViewById(R.id.btnmousescale);
 		btnmousescale.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(SBRisHide){
+				if (SBRisHide) {
 					SBRisHide = false;
 					sbrmousescale.setVisibility(SeekBar.VISIBLE);
-				}else{
+				} else {
 					SBRisHide = true;
 					sbrmousescale.setVisibility(SeekBar.GONE);
 				}
 			}
 		});
 	}
-	
-	private void sendSetupParams(int params){
-		   String data = "s";
-		   data += "x" + Screen_x + "y"+ Screen_y + "s" +params;
-		   mSocket.sendData(data);
+
+	private void sendSetupParams(int params) {
+		String data = "s";
+		data += "x" + Screen_x + "y" + Screen_y + "s" + params;
+		mSocket.sendData(data);
 	}
-	
+
 	public boolean onTouchEvent(MotionEvent event) {
-		String flag ="";
+		String flag = "";
 		// TODO Auto-generated method stub
-		if(!SBRisHide){
+		if (!SBRisHide) {
 			SBRisHide = true;
 			sbrmousescale.setVisibility(SeekBar.GONE);
 		}
 		if (!KEY_MODE) {
-			if((isClick)&&(event.getPointerCount()==1)){
+			if ((isClick) && (event.getPointerCount() == 1)) {
 				isClick = false;
 				sendMousecmd(MOUSE_CLICKUP);
 			}
-			if((!isClick)&&(event.getPointerCount()==2)){
+			if ((!isClick) && (event.getPointerCount() == 2)) {
 				isClick = true;
 				sendMousecmd(MOUSE_CLICKDOWN);
 			}
@@ -409,18 +410,18 @@ public class KeyAndMouse extends X_Activity {
 				flag = "d";
 			else if (event.getAction() == MotionEvent.ACTION_UP)
 				flag = "u";
-			sendMousecmd(flag+"x" + event.getX() + "y" + event.getY());
-			
+			sendMousecmd(flag + "x" + event.getX() + "y" + event.getY());
+
 		}
 		return super.onTouchEvent(event);
 	}
 
-	private void sendMousecmd(String cmddata){
+	private void sendMousecmd(String cmddata) {
 		String cmd = "";
 		cmd += MOUSE_FLAG;
-		mSocket.sendData(cmd+cmddata);
+		mSocket.sendData(cmd + cmddata);
 	}
-	
+
 	class BtnOnClick implements OnClickListener {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
@@ -430,4 +431,15 @@ public class KeyAndMouse extends X_Activity {
 			mSocket.sendData(cmd);
 		}
 	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		if (X_Activity.TheSourceMode == X_Menu.TouchMode)
+			super.onBackPressed();
+		X_Activity.TheSourceMode = X_Menu.TouchMode;
+		setContentView(R.layout.keyandmouse);
+		KM_init();
+	}
+
 }

@@ -55,9 +55,12 @@ public class X_Menu {
 		menu.add(0, X_Menu.ABOUT, 1,
 				mContext.getResources().getString(R.string.about)).setIcon(
 				R.drawable.ic_menu_home);   //设置菜单的图标和标题
-		menu.add(0, X_Menu.CONNECT, 1,
-				mContext.getResources().getString(R.string.connect)).setIcon(
-				R.drawable.ic_menu_refresh);
+//		menu.add(0, X_Menu.CONNECT, 1,
+//				mContext.getResources().getString(R.string.connect)).setIcon(
+//				R.drawable.ic_menu_refresh);
+		menu.add(0, X_Menu.IPSETUP, 1,
+				mContext.getResources().getString(R.string.ipsetup)).setIcon(
+				R.drawable.ic_input_add);
 		SubMenu moresetup = menu.addSubMenu(0, 0, 1, mContext.getResources()
 				.getString(R.string.more));
 		moresetup.setIcon(R.drawable.ic_menu_more);// 给 more 这个文字上面加图标
@@ -65,9 +68,9 @@ public class X_Menu {
 		moresetup.add(0, X_Menu.VIBATRE, 1,
 				mContext.getResources().getString(R.string.vibrate)).setIcon(
 				R.drawable.ic_lock_silent_mode_vibrate);
-		moresetup.add(0, X_Menu.IPSETUP, 1,
-				mContext.getResources().getString(R.string.ipsetup)).setIcon(
-				R.drawable.ic_input_add);
+//		moresetup.add(0, X_Menu.IPSETUP, 1,
+//				mContext.getResources().getString(R.string.ipsetup)).setIcon(
+//				R.drawable.ic_input_add);
 		moresetup.add(0, X_Menu.SOURCEMODE, 1,
 				mContext.getResources().getString(R.string.sourcemode))
 				.setIcon(R.drawable.ic_menu_manage);
